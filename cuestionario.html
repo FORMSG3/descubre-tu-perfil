@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cuestionario de Orientación</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; }
+        h1 { text-align: center; }
+        button { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Cuestionario de Orientación</h1>
+    <form id="quizForm">
+        <!-- Aquí pondremos las preguntas -->
+    </form>
+    <div id="result" style="margin-top:20px; font-weight:bold;"></div>
+
+    <script>
+        const questions = [
+            { text: 'Estás en un festival de música y el sonido falla. ¿Qué haces?', options: ['A', 'B', 'C'] },
+            { text: 'Un amigo te pide ayuda para mejorar la iluminación de su cuarto.', options: ['A', 'B', 'C'] },
+            { text: 'Vas a una tienda de tecnología y te llama la atención:', options: ['A', 'B', 'C'] },
+            { text: 'Te invitan a participar en una feria escolar, ¿qué prefieres hacer?', options: ['A', 'B', 'C'] },
+            { text: 'Tu tía quiere mejorar su cafetería con tecnología.', options: ['A', 'B', 'C'] },
+            { text: 'En un equipo de trabajo, ¿qué rol sueles tomar?', options: ['A', 'B', 'C'] },
+            { text: 'Un amigo quiere comprar un celular y te pide consejo.', options: ['A', 'B', 'C'] },
+            { text: 'Te ofrecen tres cursos gratuitos, ¿cuál eliges?', options: ['A', 'B', 'C'] },
+            { text: 'En una competencia de innovación, ¿qué idea propones?', options: ['A', 'B', 'C'] },
+            { text: 'Si tuvieras que ganar dinero rápido, ¿qué harías?', options: ['A', 'B', 'C'] },
+        ];
+
+        const form = document.getElementById('quizForm');
+
+        questions.forEach((q, i) => {
+            const div = document.createElement('div');
+            div.innerHTML = `<p>${i + 1}. ${q.text}</p>` +
+                q.options.map(opt => `<label><input type="radio" name="q${i}" value="${opt}" required> ${opt}</label>`).join(' ');
+            form.appendChild(div);
+        });
+
+        const btn = document.createElement('button');
+        btn.type = 'submit';
+        btn.textContent = 'Ver resultados';
+        form.appendChild(btn);
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let counts = { A: 0, B: 0, C: 0 };
+            questions.forEach((_, i) => {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`).value;
+                counts[answer]++;
+            });
+
+            let resultText = '';
+            if (counts.A > counts.B && counts.A > counts.C) resultText = 'Orientación a Programación.';
+            else if (counts.B > counts.A && counts.B > counts.C) resultText = 'Orientación a Instrumentación y Control.';
+            else if (counts.C > counts.A && counts.C > counts.B) resultText = 'Orientación a Ventas.';
+            else resultText = 'Tienes habilidades mixtas entre áreas.';
+
+            document.getElementById('result').textContent = `Resultado: ${resultText}`;
+        });
+    </script>
+</body>
+</html>
+
